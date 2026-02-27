@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS2Cases – Open CS2 Cases Online</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">CS2<span class="accent">Cases</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#cases" class="active">Cases</a></li>
+      <li><a href="#upgrades">Upgrades</a></li>
+      <li><a href="#battles">Battles</a></li>
+      <li><a href="#inventory">Inventory</a></li>
+      <li><a href="#leaderboard">Leaderboard</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="balance-display">
+        <span class="coin-icon">🪙</span>
+        <span id="balance">2,500.00</span>
+      </div>
+      <button class="btn btn-deposit" onclick="showDeposit()">+ Deposit</button>
+      <div class="user-avatar" onclick="toggleUserMenu()">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=CS2Player" alt="User" />
+        <span>Player123</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO BANNER -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🔥 New Cases Available</div>
+      <h1>Open CS2 Cases<br /><span class="gradient-text">Win Rare Skins</span></h1>
+      <p>Thousands of players win legendary items every day. Will you be next?</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">2.4M+</span>
+          <span class="stat-label">Cases Opened</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">$8.3M+</span>
+          <span class="stat-label">Total Winnings</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">312K+</span>
+          <span class="stat-label">Active Players</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-case-display">
+        <div class="floating-case">
+          <img src="https://raw.githubusercontent.com/nicklvsa/cs2-skins/main/skins/placeholder.png"
+               onerror="this.style.display='none'"
+               alt="" />
+          <div class="case-glow"></div>
+          <div class="case-placeholder">💼</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE FEED -->
+  <div class="live-feed-bar">
+    <span class="live-label">🔴 LIVE</span>
+    <div class="feed-scroll" id="liveFeed">
+      <div class="feed-items" id="feedItems"></div>
+    </div>
+  </div>
+
+  <!-- CASES SECTION -->
+  <section class="section" id="cases">
+    <div class="section-header">
+      <h2>All Cases</h2>
+      <div class="case-filters">
+        <button class="filter-btn active" onclick="filterCases('all', this)">All</button>
+        <button class="filter-btn" onclick="filterCases('featured', this)">Featured</button>
+        <button class="filter-btn" onclick="filterCases('new', this)">New</button>
+        <button class="filter-btn" onclick="filterCases('popular', this)">Popular</button>
+      </div>
+    </div>
+    <div class="cases-grid" id="casesGrid"></div>
+  </section>
+
+  <!-- CASE OPENING MODAL -->
+  <div class="modal-overlay" id="openModal" onclick="closeOpenModal(event)">
+    <div class="modal case-modal">
+      <button class="modal-close" onclick="closeOpenModal()">✕</button>
+      <h2 id="modalCaseName">Opening Case</h2>
+
+      <div class="spin-container">
+        <div class="spin-arrow"></div>
+        <div class="spin-track" id="spinTrack">
+          <!-- Items injected by JS -->
+        </div>
+      </div>
+
+      <div class="open-controls">
+        <div class="quantity-selector">
+          <button class="qty-btn" onclick="setQty(1)">×1</button>
+          <button class="qty-btn" onclick="setQty(2)">×2</button>
+          <button class="qty-btn" onclick="setQty(3)">×3</button>
+          <button class="qty-btn" onclick="setQty(5)">×5</button>
+        </div>
+        <div class="cost-display">
+          Cost: <span id="openCost" class="accent">$0.00</span>
+        </div>
+        <button class="btn btn-open" id="openBtn" onclick="spinCase()">
+          <span class="btn-icon">🎰</span> Open Case
+        </button>
+        <button class="btn btn-demo" onclick="spinCase(true)">
+          Demo (Free)
+        </button>
+      </div>
+
+      <div class="possible-items" id="possibleItems">
+        <h3>Possible Items</h3>
+        <div class="items-grid" id="itemsGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIN MODAL -->
+  <div class="modal-overlay" id="winModal" onclick="closeWinModal(event)">
+    <div class="modal win-modal">
+      <div class="win-header">
+        <div class="win-fireworks" id="winFireworks"></div>
+        <h2 id="winTitle">🎉 You Won!</h2>
+      </div>
+      <div class="win-item" id="winItem"></div>
+      <div class="win-actions">
+        <button class="btn btn-sell" onclick="sellWin()">
+          💰 Sell for <span id="sellPrice">$0.00</span>
+        </button>
+        <button class="btn btn-keep" onclick="keepWin()">
+          🎒 Add to Inventory
+        </button>
+        <button class="btn btn-open-again" onclick="openAgain()">
+          🔄 Open Again
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEPOSIT MODAL -->
+  <div class="modal-overlay" id="depositModal" onclick="closeDeposit(event)">
+    <div class="modal deposit-modal">
+      <button class="modal-close" onclick="closeDeposit()">✕</button>
+      <h2>💳 Add Funds</h2>
+      <div class="deposit-amounts">
+        <button class="deposit-btn" onclick="selectAmount(5)">$5</button>
+        <button class="deposit-btn" onclick="selectAmount(10)">$10</button>
+        <button class="deposit-btn" onclick="selectAmount(25)">$25</button>
+        <button class="deposit-btn" onclick="selectAmount(50)">$50</button>
+        <button class="deposit-btn" onclick="selectAmount(100)">$100</button>
+        <button class="deposit-btn" onclick="selectAmount(500)">$500</button>
+      </div>
+      <div class="deposit-custom">
+        <label>Custom Amount</label>
+        <input type="number" id="customAmount" placeholder="Enter amount..." min="1" max="10000" />
+      </div>
+      <div class="payment-methods">
+        <h3>Payment Method</h3>
+        <div class="payment-grid">
+          <button class="payment-btn active">💳 Card</button>
+          <button class="payment-btn">🅿️ PayPal</button>
+          <button class="payment-btn">₿ Crypto</button>
+          <button class="payment-btn">🎮 Steam</button>
+        </div>
+      </div>
+      <button class="btn btn-deposit-confirm" onclick="confirmDeposit()">
+        Deposit <span id="depositTotal">$0.00</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- INVENTORY SECTION -->
+  <section class="section" id="inventory">
+    <div class="section-header">
+      <h2>My Inventory</h2>
+      <div class="inventory-value">
+        Total Value: <span class="accent" id="inventoryValue">$0.00</span>
+      </div>
+    </div>
+    <div class="inventory-actions">
+      <button class="btn btn-sell-all" onclick="sellAll()">💰 Sell All</button>
+      <button class="btn btn-withdraw" onclick="withdraw()">📤 Withdraw</button>
+    </div>
+    <div class="inventory-grid" id="inventoryGrid">
+      <div class="empty-inventory">
+        <span>🎒</span>
+        <p>Your inventory is empty. Open some cases!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">CS2<span class="accent">Cases</span></span>
+      </div>
+      <div class="footer-links">
+        <a href="#">Terms of Service</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Provably Fair</a>
+        <a href="#">Support</a>
+        <a href="#">Blog</a>
+      </div>
+      <p class="footer-disclaimer">
+        ⚠️ This site is for entertainment purposes. Must be 18+.
+        CS2Cases is not affiliated with Valve Corporation.
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

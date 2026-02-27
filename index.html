@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameSites Hub – Gaming Sites & Trading Platforms</title>
+  <style>
+    :root {
+      --bg: #0a0d13;
+      --bg2: #10141e;
+      --card: #161c28;
+      --border: rgba(255,255,255,0.07);
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --accent: #3b82f6;
+      --gold: #f0b429;
+      --purple: #a855f7;
+      --green: #22c55e;
+      --red: #ef4444;
+      --orange: #e07b39;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; }
+
+    /* NAV */
+    nav {
+      background:var(--bg2); border-bottom:1px solid var(--border);
+      padding:0 2rem; height:64px; display:flex; align-items:center; justify-content:space-between;
+      position:sticky; top:0; z-index:100;
+    }
+    .nav-logo { font-size:1.4rem; font-weight:800; display:flex; align-items:center; gap:8px; }
+    .nav-logo span { color:var(--accent); }
+    .nav-links { display:flex; gap:8px; }
+    .nav-links a { color:var(--muted); text-decoration:none; padding:7px 14px; border-radius:8px; font-size:0.88rem; font-weight:500; transition:0.2s; }
+    .nav-links a:hover { color:var(--text); background:rgba(255,255,255,0.05); }
+
+    /* HERO */
+    .hero {
+      padding:6rem 3rem;
+      background:linear-gradient(135deg,#0a0d13 0%,#111827 50%,#0a0d13 100%);
+      text-align:center; position:relative; overflow:hidden;
+    }
+    .hero::before {
+      content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      width:800px; height:400px;
+      background:radial-gradient(ellipse,rgba(59,130,246,0.08) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.3);
+      color:var(--accent); padding:8px 20px; border-radius:30px;
+      font-size:0.85rem; font-weight:700; margin-bottom:1.5rem;
+    }
+    .hero h1 { font-size:3.8rem; font-weight:800; margin-bottom:1rem; line-height:1.15; }
+    .gradient { background:linear-gradient(135deg,var(--accent),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hero p { font-size:1.2rem; color:var(--muted); max-width:600px; margin:0 auto 2.5rem; line-height:1.6; }
+    .hero-stats { display:flex; justify-content:center; gap:3rem; }
+    .hstat { display:flex; flex-direction:column; align-items:center; }
+    .hstat-v { font-size:1.8rem; font-weight:800; color:var(--accent); }
+    .hstat-l { font-size:0.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
+
+    /* SITES GRID */
+    .sites-section {
+      max-width:1300px; margin:0 auto; padding:4rem 2rem;
+    }
+    .sites-section h2 {
+      font-size:2rem; font-weight:800; margin-bottom:0.5rem;
+    }
+    .sites-section p.lead { font-size:1rem; color:var(--muted); margin-bottom:2.5rem; }
+    .sites-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+      gap:1.5rem;
+    }
+    .site-card {
+      background:var(--card); border:1px solid var(--border); border-radius:16px;
+      padding:2rem; text-decoration:none; color:inherit;
+      transition:0.2s; display:flex; flex-direction:column; gap:1rem;
+      position:relative; overflow:hidden;
+    }
+    .site-card:hover {
+      transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,0.5);
+      border-color:rgba(255,255,255,0.15);
+    }
+    .site-card-icon { font-size:3rem; }
+    .site-card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+    .site-card-badge {
+      padding:4px 10px; border-radius:6px; font-size:0.72rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;
+    }
+    .badge-cs2 { background:rgba(59,130,246,0.15); color:var(--accent); border:1px solid rgba(59,130,246,0.3); }
+    .badge-rust { background:rgba(224,123,57,0.15); color:var(--orange); border:1px solid rgba(224,123,57,0.3); }
+    .badge-tf2 { background:rgba(190,75,21,0.15); color:#e05a1a; border:1px solid rgba(190,75,21,0.3); }
+    .badge-dota2 { background:rgba(200,147,42,0.15); color:var(--gold); border:1px solid rgba(200,147,42,0.3); }
+
+    .site-card h3 { font-size:1.3rem; font-weight:800; margin-bottom:0.25rem; }
+    .site-card p { font-size:0.9rem; color:var(--muted); line-height:1.5; flex:1; }
+    .site-card-features { display:flex; flex-wrap:wrap; gap:6px; }
+    .feature-tag {
+      background:rgba(255,255,255,0.05); border:1px solid var(--border);
+      color:var(--muted); padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:600;
+    }
+    .site-card-cta {
+      display:flex; align-items:center; justify-content:space-between;
+      padding-top:1rem; border-top:1px solid var(--border);
+    }
+    .cta-btn {
+      display:inline-flex; align-items:center; gap:6px;
+      font-weight:700; font-size:0.88rem; padding:8px 18px;
+      border-radius:8px; text-decoration:none; transition:0.2s;
+    }
+    .cs2-case-cta { background:var(--gold); color:#000; }
+    .cs2-trade-cta { background:var(--accent); color:#fff; }
+    .rust-cta { background:var(--orange); color:#fff; }
+    .tf2-cta { background:#be4b15; color:#fff; }
+    .dota2-cta { background:var(--gold); color:#000; }
+    .cta-btn:hover { transform:scale(1.05); }
+    .site-type-label { font-size:0.8rem; color:var(--muted); }
+
+    /* DIVIDER */
+    .section-divider { border:none; border-top:1px solid var(--border); margin:0 2rem; }
+
+    /* FEATURES SECTION */
+    .features-section { max-width:1300px; margin:0 auto; padding:4rem 2rem; text-align:center; }
+    .features-section h2 { font-size:2rem; font-weight:800; margin-bottom:0.5rem; }
+    .features-section p.lead { color:var(--muted); margin-bottom:3rem; }
+    .features-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.5rem; }
+    .feature-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:1.5rem; text-align:left; }
+    .feature-card-icon { font-size:2rem; margin-bottom:0.75rem; display:block; }
+    .feature-card h4 { font-size:1rem; font-weight:800; margin-bottom:0.5rem; }
+    .feature-card p { font-size:0.85rem; color:var(--muted); line-height:1.5; }
+
+    /* FOOTER */
+    footer { background:var(--bg2); border-top:1px solid var(--border); padding:2rem 3rem; text-align:center; margin-top:3rem; }
+    footer p { color:var(--muted); font-size:0.85rem; }
+    .footer-links { display:flex; justify-content:center; gap:1.5rem; margin-bottom:1rem; }
+    .footer-links a { color:var(--muted); text-decoration:none; font-size:0.88rem; transition:0.2s; }
+    .footer-links a:hover { color:var(--text); }
+
+    @media(max-width:768px) {
+      .hero h1 { font-size:2.5rem; }
+      .hero { padding:4rem 1.5rem; }
+      .sites-section { padding:2.5rem 1.5rem; }
+      .hero-stats { flex-wrap:wrap; gap:1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-logo">🎮 <span>Game</span>Sites</div>
+    <div class="nav-links">
+      <a href="#sites">Sites</a>
+      <a href="#features">Features</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-badge">⚡ 5 Gaming Platforms</div>
+    <h1>Gaming Sites &<br><span class="gradient">Trading Platforms</span></h1>
+    <p>A collection of fully-designed gaming templates including case opening sites and trading platforms for CS2, Rust, TF2, and Dota 2.</p>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-v">5</span><span class="hstat-l">Sites</span></div>
+      <div class="hstat"><span class="hstat-v">4</span><span class="hstat-l">Games</span></div>
+      <div class="hstat"><span class="hstat-v">100%</span><span class="hstat-l">Static</span></div>
+      <div class="hstat"><span class="hstat-v">0</span><span class="hstat-l">Dependencies</span></div>
+    </div>
+  </section>
+
+  <section class="sites-section" id="sites">
+    <h2>All Sites</h2>
+    <p class="lead">Five complete gaming platforms with full UI, logic, and interactivity.</p>
+    <div class="sites-grid">
+
+      <!-- CS2 Cases -->
+      <a class="site-card" href="cs2-cases/index.html">
+        <div class="site-card-header">
+          <div class="site-card-icon">💼</div>
+          <span class="site-card-badge badge-cs2">CS2 · Case Opening</span>
+        </div>
+        <h3>CS2Cases</h3>
+        <p>A HellCase-inspired CS2 case opening platform. Open cases, spin for rare skins, manage your inventory, and deposit funds.</p>
+        <div class="site-card-features">
+          <span class="feature-tag">Case Opening</span>
+          <span class="feature-tag">Spin Animation</span>
+          <span class="feature-tag">Live Feed</span>
+          <span class="feature-tag">Inventory</span>
+          <span class="feature-tag">Deposit System</span>
+          <span class="feature-tag">Win Modal</span>
+        </div>
+        <div class="site-card-cta">
+          <span class="site-type-label">Like HellCase</span>
+          <span class="cta-btn cs2-case-cta">Open Site →</span>
+        </div>
+      </a>
+
+      <!-- CS2 Trading -->
+      <a class="site-card" href="cs2-trading/index.html">
+        <div class="site-card-header">
+          <div class="site-card-icon">⚔️</div>
+          <span class="site-card-badge badge-cs2">CS2 · Trading</span>
+        </div>
+        <h3>CS2Market</h3>
+        <p>A full CS2 skin trading marketplace. Browse listings, buy skins, send trade offers, list your own items, and track history.</p>
+        <div class="site-card-features">
+          <span class="feature-tag">Marketplace</span>
+          <span class="feature-tag">Trade Offers</span>
+          <span class="feature-tag">Item Detail</span>
+          <span class="feature-tag">Sell Listings</span>
+          <span class="feature-tag">Grid/List View</span>
+          <span class="feature-tag">Trade History</span>
+        </div>
+        <div class="site-card-cta">
+          <span class="site-type-label">Like CS2Float / SkinBaron</span>
+          <span class="cta-btn cs2-trade-cta">Open Site →</span>
+        </div>
+      </a>
+
+      <!-- Rust Trading -->
+      <a class="site-card" href="rust-trading/index.html">
+        <div class="site-card-header">
+          <div class="site-card-icon">🔧</div>
+          <span class="site-card-badge badge-rust">Rust · Trading</span>
+        </div>
+        <h3>RustTrade</h3>
+        <p>A Rust game skin marketplace. Browse weapon skins, clothing, tools and armor. Buy, sell, and manage your inventory.</p>
+        <div class="site-card-features">
+          <span class="feature-tag">Skin Marketplace</span>
+          <span class="feature-tag">Categories</span>
+          <span class="feature-tag">Sales Ticker</span>
+          <span class="feature-tag">Inventory</span>
+          <span class="feature-tag">Pagination</span>
+          <span class="feature-tag">Sell Listings</span>
+        </div>
+        <div class="site-card-cta">
+          <span class="site-type-label">Like Rustyskins / Skinsmonkey</span>
+          <span class="cta-btn rust-cta">Open Site →</span>
+        </div>
+      </a>
+
+      <!-- TF2 Trading -->
+      <a class="site-card" href="tf2-trading/index.html">
+        <div class="site-card-header">
+          <div class="site-card-icon">🎮</div>
+          <span class="site-card-badge badge-tf2">TF2 · Trading</span>
+        </div>
+        <h3>TF2Bazaar</h3>
+        <p>A Team Fortress 2 item trading platform. Trade unusuals, strange weapons, hats and more using keys and refined metal.</p>
+        <div class="site-card-features">
+          <span class="feature-tag">Keys & Ref Currency</span>
+          <span class="feature-tag">Unusual Filter</span>
+          <span class="feature-tag">Quality Filters</span>
+          <span class="feature-tag">Backpack View</span>
+          <span class="feature-tag">Class Filter</span>
+          <span class="feature-tag">Trade Listings</span>
+        </div>
+        <div class="site-card-cta">
+          <span class="site-type-label">Like Backpack.tf / TF2.gg</span>
+          <span class="cta-btn tf2-cta">Open Site →</span>
+        </div>
+      </a>
+
+      <!-- Dota 2 Trading -->
+      <a class="site-card" href="dota2-trading/index.html">
+        <div class="site-card-header">
+          <div class="site-card-icon">🔮</div>
+          <span class="site-card-badge badge-dota2">Dota 2 · Trading</span>
+        </div>
+        <h3>Dota2Items</h3>
+        <p>A Dota 2 item trading platform. Buy and sell Arcanas, Immortals, Legendaries, Couriers and more. Filter by hero or rarity.</p>
+        <div class="site-card-features">
+          <span class="feature-tag">Arcana Showcase</span>
+          <span class="feature-tag">Immortal Showcase</span>
+          <span class="feature-tag">Hero Filter</span>
+          <span class="feature-tag">Rarity Filter</span>
+          <span class="feature-tag">Item Detail</span>
+          <span class="feature-tag">Inventory</span>
+        </div>
+        <div class="site-card-cta">
+          <span class="site-type-label">Like OpenDota Market</span>
+          <span class="cta-btn dota2-cta">Open Site →</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <section class="features-section" id="features">
+    <h2>What's Included</h2>
+    <p class="lead">Every site is built with pure HTML, CSS, and vanilla JavaScript — no frameworks or build tools needed.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-card-icon">🎨</span>
+        <h4>Dark Gaming Themes</h4>
+        <p>Each site has its own unique dark color palette inspired by the game's aesthetic.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-icon">💡</span>
+        <h4>Interactive UI</h4>
+        <p>Modals, filters, sorting, buying, selling, and inventory — all fully functional in the browser.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-icon">📱</span>
+        <h4>Responsive Design</h4>
+        <p>All sites adapt gracefully to mobile and tablet screen sizes with proper breakpoints.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-icon">⚡</span>
+        <h4>Zero Dependencies</h4>
+        <p>Pure HTML/CSS/JS with no npm, no bundler, no external frameworks — just open and use.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-icon">🔮</span>
+        <h4>Simulated Economies</h4>
+        <p>Each platform simulates a balance system, trade flow, and inventory management for demo purposes.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-icon">🗂️</span>
+        <h4>Separated by Game</h4>
+        <p>Every site lives in its own folder — independently deployable and easily customizable.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="cs2-cases/index.html">CS2Cases</a>
+      <a href="cs2-trading/index.html">CS2Market</a>
+      <a href="rust-trading/index.html">RustTrade</a>
+      <a href="tf2-trading/index.html">TF2Bazaar</a>
+      <a href="dota2-trading/index.html">Dota2Items</a>
+    </div>
+    <p>These are template/demo sites for entertainment and educational purposes only. Not affiliated with Valve Corporation.</p>
+  </footer>
+</body>
+</html>
