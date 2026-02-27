@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dota2Items – Dota 2 Item Trading</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">🔮</span>
+      <span class="logo-text">Dota2<span class="accent">Items</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#market" class="active">Market</a></li>
+      <li><a href="#immortal">Immortals</a></li>
+      <li><a href="#arcana">Arcanas</a></li>
+      <li><a href="#trades">My Trades</a></li>
+      <li><a href="#inventory">Inventory</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="balance-display">
+        <span>💎</span>
+        <span id="balance">$780.00</span>
+      </div>
+      <button class="btn btn-primary" onclick="openListModal()">+ List Item</button>
+      <div class="user-avatar">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Dota2Player" alt="User" />
+        <span>AncientPlayer</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO BANNER -->
+  <div class="dota-banner">
+    <div class="banner-inner">
+      <div class="banner-text">
+        <div class="banner-pill">🏆 ARCANA SEASON</div>
+        <h1>Dota 2 Item Market</h1>
+        <p>Trade Arcanas, Immortals, Couriers and more. Instant delivery, safe trades.</p>
+        <div class="banner-stats">
+          <div class="bs"><span class="bv" id="listingTotal">0</span><span class="bl">Items Listed</span></div>
+          <div class="bs"><span class="bv">$12M+</span><span class="bl">Volume Traded</span></div>
+          <div class="bs"><span class="bv">65K</span><span class="bl">Active Traders</span></div>
+        </div>
+      </div>
+      <div class="banner-heroes" id="bannerHeroes"></div>
+    </div>
+  </div>
+
+  <!-- HERO FILTER ROW -->
+  <div class="hero-filter-row">
+    <span class="hfr-label">Filter by Hero:</span>
+    <div class="hero-filter-btns" id="heroFilterBtns"></div>
+  </div>
+
+  <!-- ITEM TYPE ROW -->
+  <div class="item-type-row">
+    <button class="it-btn active" onclick="filterType('all', this)">All</button>
+    <button class="it-btn" onclick="filterType('Arcana', this)">✨ Arcana</button>
+    <button class="it-btn" onclick="filterType('Immortal', this)">💀 Immortal</button>
+    <button class="it-btn" onclick="filterType('Legendary', this)">🌟 Legendary</button>
+    <button class="it-btn" onclick="filterType('Rare', this)">💙 Rare</button>
+    <button class="it-btn" onclick="filterType('Courier', this)">📦 Courier</button>
+    <button class="it-btn" onclick="filterType('Ward', this)">👁️ Ward</button>
+  </div>
+
+  <!-- SEARCH / SORT -->
+  <div class="search-sort-row">
+    <div class="search-wrap">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Search Dota 2 items, heroes..." oninput="applyFilters()" />
+    </div>
+    <select id="sortSel" onchange="applyFilters()">
+      <option value="price-desc">Price: High → Low</option>
+      <option value="price-asc">Price: Low → High</option>
+      <option value="name">Name A-Z</option>
+    </select>
+    <div class="price-range">
+      <input type="number" id="minPrice" placeholder="$ Min" oninput="applyFilters()" />
+      <span>–</span>
+      <input type="number" id="maxPrice" placeholder="$ Max" oninput="applyFilters()" />
+    </div>
+  </div>
+
+  <!-- MARKET -->
+  <main class="market-area" id="market">
+    <div class="market-count"><strong id="resCount">0</strong> listings</div>
+    <div class="market-grid" id="marketGrid"></div>
+  </main>
+
+  <!-- ITEM DETAIL MODAL -->
+  <div class="modal-overlay" id="detailModal" onclick="closeDetailModal(event)">
+    <div class="modal detail-modal">
+      <button class="modal-close" onclick="closeDetailModal()">✕</button>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+
+  <!-- LIST ITEM MODAL -->
+  <div class="modal-overlay" id="listModal" onclick="closeListModal(event)">
+    <div class="modal list-modal">
+      <button class="modal-close" onclick="closeListModal()">✕</button>
+      <h2>🏷️ List Item</h2>
+      <p class="sub">Select an item from your inventory</p>
+      <div class="inv-select-grid" id="invSelectGrid"></div>
+      <div class="list-form" id="listForm" style="display:none">
+        <div class="list-item-preview" id="listItemPreview"></div>
+        <label>Price (USD)</label>
+        <input type="number" id="listPrice" step="0.01" placeholder="0.00" />
+        <div class="suggest-price" id="suggestPrice"></div>
+        <button class="btn btn-primary btn-wide" onclick="submitListing()">List Item</button>
+        <button class="btn btn-ghost btn-wide" onclick="closeListModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY TRADES -->
+  <section class="section" id="trades">
+    <h2>🔄 My Active Listings</h2>
+    <div id="myTradesContainer">
+      <div class="empty-msg"><span>📭</span><p>No active listings.</p></div>
+    </div>
+  </section>
+
+  <!-- IMMORTAL SHOWCASE -->
+  <section class="section" id="immortal">
+    <h2>💀 Featured Immortals</h2>
+    <div class="showcase-grid" id="immortalGrid"></div>
+  </section>
+
+  <!-- ARCANA SHOWCASE -->
+  <section class="section" id="arcana">
+    <h2>✨ Featured Arcanas</h2>
+    <div class="showcase-grid" id="arcanaGrid"></div>
+  </section>
+
+  <!-- INVENTORY -->
+  <section class="section" id="inventory">
+    <div class="inv-top">
+      <h2>🎒 My Items</h2>
+      <div class="inv-right">
+        <span class="inv-val">Est. Value: <strong id="invValue">$0.00</strong></span>
+        <button class="btn btn-outline" onclick="sellAllItems()">Sell All</button>
+      </div>
+    </div>
+    <div class="inv-grid" id="inventoryGrid"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">🔮 Dota2<span class="accent">Items</span></div>
+        <p>Not affiliated with Valve Corporation or Dota 2.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Terms</a><a href="#">Privacy</a><a href="#">Discord</a><a href="#">API</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

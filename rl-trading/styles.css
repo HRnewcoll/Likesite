@@ -1,0 +1,130 @@
+/* ===========================
+   RLExchange – Rocket League Trading
+   =========================== */
+:root {
+  --bg-primary: #0c0f1a;
+  --bg-secondary: #131729;
+  --bg-card: #181d30;
+  --bg-hover: #1e2438;
+  --accent: #00c6ff;
+  --accent2: #0099cc;
+  --orange: #ff6b35;
+  --orange2: #e05a28;
+  --gold: #f5a623;
+  --purple: #a855f7;
+  --green: #22c55e;
+  --red: #ef4444;
+  --text-primary: #e8eaf6;
+  --text-secondary: #6b7db3;
+  --border: rgba(255,255,255,0.07);
+  --radius: 12px;
+  --transition: 0.2s ease;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg-primary); color:var(--text-primary); font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; overflow-x:hidden; }
+
+/* NAVBAR */
+.navbar { display:flex; align-items:center; justify-content:space-between; padding:0 2rem; height:64px; background:var(--bg-secondary); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+.nav-logo { display:flex; align-items:center; gap:8px; font-size:1.4rem; font-weight:800; }
+.accent { color:var(--accent); }
+.nav-links { display:flex; gap:0.25rem; list-style:none; }
+.nav-links a { color:var(--text-secondary); text-decoration:none; padding:8px 14px; border-radius:8px; font-weight:500; font-size:0.9rem; transition:var(--transition); }
+.nav-links a:hover, .nav-links a.active { color:var(--text-primary); background:rgba(255,255,255,0.06); }
+.nav-right { display:flex; align-items:center; gap:12px; }
+.balance-display { display:flex; align-items:center; gap:6px; background:rgba(0,198,255,0.1); border:1px solid rgba(0,198,255,0.25); padding:6px 14px; border-radius:8px; font-weight:700; font-size:0.9rem; }
+.btn { padding:8px 18px; border:none; border-radius:8px; font-weight:700; font-size:0.88rem; cursor:pointer; transition:var(--transition); }
+.btn-primary { background:var(--accent); color:#000; }
+.btn-primary:hover { background:var(--accent2); }
+.user-avatar { display:flex; align-items:center; gap:8px; cursor:pointer; padding:6px 10px; border-radius:8px; }
+.user-avatar img { width:32px; height:32px; border-radius:50%; border:2px solid var(--accent); }
+.user-avatar span { font-size:0.88rem; font-weight:600; }
+
+/* HERO / BANNER */
+.rl-banner { background:linear-gradient(135deg,#0c0f1a 0%,#0d1325 40%,#0c1020 100%); border-bottom:1px solid var(--border); padding:3rem 3rem 2.5rem; position:relative; overflow:hidden; }
+.rl-banner::before { content:''; position:absolute; top:-40%; left:30%; width:700px; height:700px; border-radius:50%; background:radial-gradient(circle,rgba(0,198,255,0.07) 0%,transparent 70%); pointer-events:none; }
+.banner-content { max-width:600px; }
+.banner-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(0,198,255,0.1); border:1px solid rgba(0,198,255,0.3); color:var(--accent); padding:6px 16px; border-radius:30px; font-size:0.8rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:1.25rem; }
+.rl-banner h1 { font-size:3rem; font-weight:900; margin-bottom:0.75rem; line-height:1.1; }
+.gradient-text { background:linear-gradient(135deg,var(--accent),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.rl-banner p { color:var(--text-secondary); font-size:1rem; margin-bottom:1.5rem; max-width:480px; }
+.banner-stats { display:flex; gap:2rem; flex-wrap:wrap; }
+.bstat { display:flex; flex-direction:column; }
+.bv { font-size:1.4rem; font-weight:800; color:var(--accent); }
+.bl { font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em; }
+
+/* SALES TICKER */
+.ticker-bar { background:var(--bg-secondary); border-bottom:1px solid var(--border); height:40px; display:flex; align-items:center; overflow:hidden; position:relative; }
+.ticker-label { background:var(--orange); color:#fff; padding:0 14px; height:100%; display:flex; align-items:center; font-weight:800; font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; white-space:nowrap; }
+.ticker-scroll { display:flex; animation:tickerMove 40s linear infinite; gap:0; }
+@keyframes tickerMove { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+.ticker-item { padding:0 20px; font-size:0.82rem; color:var(--text-secondary); white-space:nowrap; display:flex; align-items:center; gap:6px; border-right:1px solid var(--border); height:40px; }
+.ticker-item strong { color:var(--text-primary); }
+.ticker-item .ticker-price { color:var(--accent); font-weight:700; }
+
+/* SECTION */
+.section { max-width:1280px; margin:0 auto; padding:2.5rem 2rem; }
+.section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem; }
+.section-header h2 { font-size:1.6rem; font-weight:800; }
+
+/* FILTERS */
+.filters-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1.5rem; align-items:center; }
+.filter-btn { background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text-secondary); padding:7px 14px; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:600; transition:var(--transition); }
+.filter-btn.active, .filter-btn:hover { background:var(--accent); border-color:var(--accent); color:#000; }
+.search-box { display:flex; align-items:center; gap:8px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:8px 14px; flex:1; min-width:200px; }
+.search-box input { background:none; border:none; outline:none; color:var(--text-primary); font-size:0.88rem; width:100%; }
+.sort-select { background:var(--bg-card); border:1px solid var(--border); color:var(--text-primary); padding:8px 12px; border-radius:8px; font-size:0.84rem; cursor:pointer; }
+
+/* ITEMS GRID */
+.items-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:1rem; }
+.item-card { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:1.25rem; cursor:pointer; transition:var(--transition); position:relative; }
+.item-card:hover { transform:translateY(-3px); border-color:rgba(0,198,255,0.3); box-shadow:0 8px 24px rgba(0,198,255,0.1); }
+.item-emoji { font-size:2.8rem; display:block; text-align:center; margin-bottom:0.75rem; }
+.item-name { font-weight:700; font-size:0.92rem; margin-bottom:0.2rem; }
+.item-meta { font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.5rem; display:flex; gap:6px; flex-wrap:wrap; }
+.paint-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+.item-price { font-size:1rem; font-weight:800; color:var(--accent); margin-bottom:0.75rem; }
+.item-footer { display:flex; align-items:center; justify-content:space-between; }
+.cert-badge { font-size:0.72rem; font-weight:700; padding:3px 8px; border-radius:6px; background:rgba(168,85,247,0.15); color:#a855f7; border:1px solid rgba(168,85,247,0.3); }
+.btn-buy { background:var(--accent); color:#000; padding:6px 14px; border:none; border-radius:7px; cursor:pointer; font-weight:700; font-size:0.82rem; transition:var(--transition); }
+.btn-buy:hover { background:var(--accent2); }
+.rarity-exotic { border-top:3px solid #ff6b35; }
+.rarity-black-market { border-top:3px solid #a855f7; }
+.rarity-import { border-top:3px solid #ef4444; }
+.rarity-rare { border-top:3px solid #3b82f6; }
+.rarity-uncommon { border-top:3px solid #22c55e; }
+
+/* TRADE SECTION */
+.trade-panel { display:grid; grid-template-columns:1fr 60px 1fr; gap:1rem; align-items:start; }
+@media(max-width:760px){ .trade-panel { grid-template-columns:1fr; } .trade-arrow { display:none; } }
+.trade-side { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:1.5rem; min-height:200px; }
+.trade-side h4 { font-size:1rem; font-weight:700; margin-bottom:1rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em; }
+.trade-arrow { display:flex; align-items:center; justify-content:center; font-size:2rem; padding-top:3rem; }
+.trade-slot { border:2px dashed var(--border); border-radius:10px; padding:1rem; text-align:center; cursor:pointer; transition:var(--transition); margin-bottom:0.5rem; }
+.trade-slot:hover { border-color:var(--accent); background:rgba(0,198,255,0.05); }
+.trade-slot.filled { border-style:solid; border-color:var(--accent); background:rgba(0,198,255,0.06); }
+.btn-send-trade { width:100%; background:var(--orange); color:#fff; padding:12px; border-radius:10px; border:none; cursor:pointer; font-weight:800; font-size:1rem; margin-top:1rem; transition:var(--transition); }
+.btn-send-trade:hover { background:var(--orange2); }
+
+/* INVENTORY */
+.inv-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; }
+.inv-total { font-size:0.9rem; color:var(--text-secondary); }
+.inv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:0.75rem; }
+.inv-card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:0.85rem; text-align:center; cursor:pointer; transition:var(--transition); }
+.inv-card:hover { border-color:rgba(0,198,255,0.3); transform:translateY(-2px); }
+.inv-card.selected { border-color:var(--accent); background:rgba(0,198,255,0.08); }
+.inv-card-emoji { font-size:1.8rem; display:block; margin-bottom:0.35rem; }
+.inv-card-name { font-size:0.72rem; font-weight:600; margin-bottom:0.2rem; }
+.inv-card-val { font-size:0.8rem; color:var(--accent); font-weight:700; }
+.empty-state { text-align:center; padding:2.5rem; color:var(--text-secondary); grid-column:1/-1; }
+.empty-state span { font-size:2.5rem; display:block; margin-bottom:0.75rem; }
+
+/* TOAST */
+.toast { position:fixed; bottom:2rem; right:2rem; background:var(--bg-secondary); border:1px solid rgba(0,198,255,0.35); color:var(--text-primary); padding:12px 20px; border-radius:10px; font-weight:600; font-size:0.88rem; z-index:999; transform:translateY(100px); opacity:0; transition:0.3s; max-width:300px; }
+.toast.show { transform:translateY(0); opacity:1; }
+
+@media(max-width:768px){
+  .rl-banner { padding:2rem 1.5rem; }
+  .rl-banner h1 { font-size:2.2rem; }
+  .section { padding:2rem 1.5rem; }
+  .banner-stats { gap:1.25rem; }
+}

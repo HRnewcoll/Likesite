@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RLExchange – Rocket League Item Trading</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span style="font-size:1.6rem;">🚀</span>
+      <span style="margin-left:8px;">RL<span class="accent">Exchange</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#market" class="active">Market</a></li>
+      <li><a href="#trade">Trade</a></li>
+      <li><a href="#inventory">Inventory</a></li>
+      <li><a href="#history">History</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="balance-display">
+        <span>💎</span>
+        <span id="balance">3,200 Credits</span>
+      </div>
+      <button class="btn btn-primary" onclick="showDeposit()">+ Credits</button>
+      <div class="user-avatar">
+        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=RLPlayer" alt="User" />
+        <span>RocketAce</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BANNER -->
+  <div class="rl-banner">
+    <div class="banner-content">
+      <div class="banner-badge">🚗 SEASON 14 ITEMS</div>
+      <h1>The #1 <span class="gradient-text">Rocket League</span> Item Market</h1>
+      <p>Trade Titanium White Octanes, Black Market decals, Exotic wheels, and more. Instant delivery every time.</p>
+      <div class="banner-stats">
+        <div class="bstat"><span class="bv" id="listingCount">0</span><span class="bl">Active Listings</span></div>
+        <div class="bstat"><span class="bv">1.2M+</span><span class="bl">Credits Traded</span></div>
+        <div class="bstat"><span class="bv">52K</span><span class="bl">Online Now</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker-bar">
+    <div class="ticker-label">🔴 SOLD</div>
+    <div class="ticker-scroll" id="tickerScroll"></div>
+  </div>
+
+  <!-- MARKET -->
+  <section class="section" id="market">
+    <div class="section-header">
+      <h2>🛒 Item Market</h2>
+      <span style="color:var(--text-secondary);font-size:0.88rem;" id="resultCount"></span>
+    </div>
+    <div class="filters-bar">
+      <button class="filter-btn active" onclick="filterItems('all',this)">All</button>
+      <button class="filter-btn" onclick="filterItems('decal',this)">🎨 Decals</button>
+      <button class="filter-btn" onclick="filterItems('wheel',this)">⚙️ Wheels</button>
+      <button class="filter-btn" onclick="filterItems('boost',this)">🔥 Boosts</button>
+      <button class="filter-btn" onclick="filterItems('car',this)">🚗 Cars</button>
+      <button class="filter-btn" onclick="filterItems('goal',this)">🥅 Goal Explosions</button>
+      <button class="filter-btn" onclick="filterItems('topper',this)">🎩 Toppers</button>
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="itemSearch" placeholder="Search items..." oninput="searchItems()" />
+      </div>
+      <select class="sort-select" onchange="sortItems(this.value)">
+        <option value="price-desc">Price: High → Low</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="name">Name A-Z</option>
+      </select>
+    </div>
+    <div class="items-grid" id="itemsGrid"></div>
+  </section>
+
+  <!-- TRADE OFFER -->
+  <section class="section" id="trade">
+    <div class="section-header"><h2>🤝 Create Trade Offer</h2></div>
+    <div class="trade-panel">
+      <div class="trade-side">
+        <h4>📤 Your Offer</h4>
+        <div id="offerSlots">
+          <div class="trade-slot" onclick="addToOffer(0)">+ Add item from inventory</div>
+          <div class="trade-slot" onclick="addToOffer(1)">+ Add item from inventory</div>
+          <div class="trade-slot" onclick="addToOffer(2)">+ Add item from inventory</div>
+        </div>
+        <div style="margin-top:1rem;color:var(--text-secondary);font-size:0.85rem;">Offer Value: <strong id="offerVal" style="color:var(--accent);">0 Credits</strong></div>
+      </div>
+      <div class="trade-arrow">⇄</div>
+      <div class="trade-side">
+        <h4>📥 You Want</h4>
+        <div id="requestSlots">
+          <div class="trade-slot" onclick="addToRequest(0)">+ Add item from market</div>
+          <div class="trade-slot" onclick="addToRequest(1)">+ Add item from market</div>
+          <div class="trade-slot" onclick="addToRequest(2)">+ Add item from market</div>
+        </div>
+        <div style="margin-top:1rem;color:var(--text-secondary);font-size:0.85rem;">Request Value: <strong id="requestVal" style="color:var(--accent);">0 Credits</strong></div>
+        <button class="btn-send-trade" onclick="sendTrade()">🚀 Send Trade Offer</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- INVENTORY -->
+  <section class="section" id="inventory">
+    <div class="inv-header">
+      <h2>🎒 My Inventory</h2>
+      <span class="inv-total" id="invTotal">Total: 0 Credits</span>
+    </div>
+    <div class="inv-grid" id="invGrid">
+      <div class="empty-state"><span>🚗</span>No items yet. Buy from the market!</div>
+    </div>
+  </section>
+
+  <!-- HISTORY TABLE -->
+  <section class="section" id="history">
+    <div class="section-header"><h2>📋 Trade History</h2></div>
+    <div style="overflow-x:auto;">
+      <table id="historyTable" style="width:100%;border-collapse:collapse;font-size:0.88rem;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);color:var(--text-secondary);">
+            <th style="text-align:left;padding:10px 12px;">Item</th>
+            <th style="text-align:left;padding:10px 12px;">Type</th>
+            <th style="text-align:left;padding:10px 12px;">Credits</th>
+            <th style="text-align:left;padding:10px 12px;">Action</th>
+            <th style="text-align:left;padding:10px 12px;">Time</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+          <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-secondary);">No trade history yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+
+  <footer style="text-align:center;padding:2rem;color:var(--text-secondary);font-size:0.82rem;border-top:1px solid var(--border);margin-top:1rem;">
+    <a href="../index.html" style="color:var(--accent);text-decoration:none;font-weight:700;margin-bottom:0.5rem;display:inline-block;">← Back to GameSites Hub</a><br/>
+    ⚠️ RLExchange is a demo template. Not affiliated with Psyonix or Epic Games.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

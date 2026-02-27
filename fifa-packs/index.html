@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FUTPacks – FIFA FUT Pack Opening</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span style="font-size:1.6rem;">⚽</span>
+      <span style="margin-left:8px;">FUT<span class="accent">Packs</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#packs" class="active">Packs</a></li>
+      <li><a href="#squad">My Squad</a></li>
+      <li><a href="#market">Transfer Market</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="balance-display">
+        <span>💰</span>
+        <span id="balance">75,000 Coins</span>
+      </div>
+      <button class="btn btn-deposit" onclick="showDeposit()">+ Coins</button>
+      <div class="user-avatar">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=FIFAManager" alt="User" />
+        <span>ManagerFC</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">⚽ FC 25 Ultimate Team</div>
+    <h1>Open FUT Packs<br /><span class="gradient-text">Build Your Dream Team</span></h1>
+    <p>Open Gold, Mega, TOTS, and TOTY packs to find elite players. Build the ultimate squad and dominate Division Rivals.</p>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hv">99</span><span class="hl">Max Rating</span></div>
+      <div class="hstat"><span class="hv">18,000+</span><span class="hl">Players Available</span></div>
+      <div class="hstat"><span class="hv">4M+</span><span class="hl">Packs Opened Daily</span></div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-bar">
+    <div class="ticker-label">🔥 PACKED</div>
+    <div class="ticker-scroll" id="tickerScroll"></div>
+  </div>
+
+  <!-- PACK STORE -->
+  <section class="section" id="packs">
+    <div class="section-header">
+      <h2>🎁 Pack Store</h2>
+      <span style="color:var(--text-secondary);font-size:0.88rem;">Each pack contains players + consumables</span>
+    </div>
+    <div class="packs-grid" id="packsGrid"></div>
+  </section>
+
+  <!-- OPENING MODAL -->
+  <div class="opening-overlay" id="openingOverlay">
+    <div class="opening-modal">
+      <button class="modal-close-btn" onclick="closeOpening()">×</button>
+      <h3 id="openingTitle">Opening Pack…</h3>
+      <div class="players-reveal" id="playersReveal"></div>
+      <div class="modal-actions">
+        <button class="btn-keep-all" onclick="addAllToSquad()">✅ Add All to Club</button>
+        <button class="btn-open-again" onclick="openAgain()">🎁 Open Another</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY SQUAD -->
+  <section class="squad-section" id="squad">
+    <h2>🏟️ My Club <span id="squadCount" style="font-size:1rem;font-weight:600;color:var(--text-secondary);">(0 players)</span></h2>
+    <div class="squad-grid" id="squadGrid">
+      <div class="empty-state"><span>⚽</span>Open packs to add players to your club!</div>
+    </div>
+  </section>
+
+  <!-- MARKET (simplified) -->
+  <section class="section" id="market">
+    <div class="section-header"><h2>💸 Transfer Market</h2></div>
+    <div id="marketGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;"></div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+
+  <footer style="text-align:center;padding:2rem;color:var(--text-secondary);font-size:0.82rem;border-top:1px solid var(--border);margin-top:1rem;">
+    <a href="../index.html" style="color:var(--accent);text-decoration:none;font-weight:700;margin-bottom:0.5rem;display:inline-block;">← Back to GameSites Hub</a><br/>
+    ⚠️ FUTPacks is a demo template. Not affiliated with EA Sports or FIFA.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

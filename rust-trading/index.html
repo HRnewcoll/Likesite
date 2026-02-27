@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RustTrade – Trade Rust Skins</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">🔧</span>
+      <span class="logo-text">Rust<span class="accent">Trade</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#market" class="active">Market</a></li>
+      <li><a href="#skins">Skin Store</a></li>
+      <li><a href="#trades">Trades</a></li>
+      <li><a href="#inventory">Inventory</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="online-indicator">🟢 <span id="onlineCount">12,540</span> Online</div>
+      <div class="balance-display">
+        <span>🦀</span>
+        <span id="balance">$850.00</span>
+      </div>
+      <button class="btn btn-primary" onclick="openSellModal()">+ List Skin</button>
+      <div class="user-avatar">
+        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=RustPlayer" alt="User" />
+        <span>SurvivalPro</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO BANNER -->
+  <div class="rust-banner">
+    <div class="banner-content">
+      <div class="banner-badge">🔥 HOT SKINS</div>
+      <h1>The #1 Rust Skin Marketplace</h1>
+      <p>Trade weapon skins, clothing, and more. Instant transactions, best prices.</p>
+      <div class="banner-stats">
+        <div class="bstat"><span class="bv" id="listingCount">0</span><span class="bl">Active Listings</span></div>
+        <div class="bstat"><span class="bv">$4.2M</span><span class="bl">Volume Today</span></div>
+        <div class="bstat"><span class="bv">98%</span><span class="bl">Happy Traders</span></div>
+      </div>
+    </div>
+    <div class="banner-items" id="bannerItems"></div>
+  </div>
+
+  <!-- RECENT SALES TICKER -->
+  <div class="ticker-bar">
+    <span class="ticker-label">📈 RECENT SALES</span>
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="categories-bar">
+    <button class="cat-btn active" onclick="filterCategory('', this)">🗂️ All</button>
+    <button class="cat-btn" onclick="filterCategory('Weapon', this)">🔫 Weapons</button>
+    <button class="cat-btn" onclick="filterCategory('Clothing', this)">👕 Clothing</button>
+    <button class="cat-btn" onclick="filterCategory('Tool', this)">🔨 Tools</button>
+    <button class="cat-btn" onclick="filterCategory('Armor', this)">🛡️ Armor</button>
+    <button class="cat-btn" onclick="filterCategory('Misc', this)">📦 Misc</button>
+  </div>
+
+  <!-- SEARCH & SORT -->
+  <div class="search-sort-bar">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Search Rust skins..." oninput="filterSkins()" />
+    </div>
+    <div class="sort-controls">
+      <select id="sortBy" onchange="filterSkins()">
+        <option value="price-asc">Price ↑</option>
+        <option value="price-desc">Price ↓</option>
+        <option value="newest">Newest</option>
+        <option value="name">Name A-Z</option>
+      </select>
+      <select id="qualityFilter" onchange="filterSkins()">
+        <option value="">All Qualities</option>
+        <option value="Pristine">Pristine</option>
+        <option value="Good">Good</option>
+        <option value="Worn">Worn</option>
+        <option value="Rough">Rough</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- MARKET GRID -->
+  <main class="market-grid-wrapper" id="market">
+    <div class="market-grid" id="marketGrid"></div>
+    <div class="pagination" id="pagination"></div>
+  </main>
+
+  <!-- SKIN DETAIL MODAL -->
+  <div class="modal-overlay" id="skinModal" onclick="closeSkinModal(event)">
+    <div class="modal skin-modal">
+      <button class="modal-close" onclick="closeSkinModal()">✕</button>
+      <div id="skinDetail"></div>
+    </div>
+  </div>
+
+  <!-- SELL MODAL -->
+  <div class="modal-overlay" id="sellModal" onclick="closeSellModal(event)">
+    <div class="modal sell-modal">
+      <button class="modal-close" onclick="closeSellModal()">✕</button>
+      <h2>📦 List Skin</h2>
+      <p class="modal-sub">Select a skin from your inventory to list</p>
+      <div class="inv-grid" id="invGrid"></div>
+      <div class="sell-config" id="sellConfig" style="display:none">
+        <div class="sell-preview" id="sellPreview"></div>
+        <label>Your Price ($)</label>
+        <input type="number" id="sellPrice" step="0.01" placeholder="0.00" />
+        <div class="market-avg" id="marketAvg"></div>
+        <button class="btn btn-primary btn-full" onclick="submitListing()">📦 List for Sale</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRADES SECTION -->
+  <section class="section" id="trades">
+    <h2>🔄 Active Listings</h2>
+    <div id="activeTrades"><div class="empty"><span>📦</span><p>You have no active listings.</p></div></div>
+  </section>
+
+  <!-- INVENTORY SECTION -->
+  <section class="section" id="inventory">
+    <div class="inv-header">
+      <h2>🎒 My Inventory</h2>
+      <div>
+        <span class="inv-value">Total: <strong id="invTotal">$0.00</strong></span>
+        <button class="btn btn-outline" onclick="sellAllInventory()">Sell All</button>
+      </div>
+    </div>
+    <div class="inv-items-grid" id="invItemsGrid"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div>
+      <div class="footer-logo">🔧 Rust<span class="accent">Trade</span></div>
+      <p>© 2024 RustTrade – Not affiliated with Facepunch Studios</p>
+    </div>
+    <div class="footer-links">
+      <a href="#">Terms</a><a href="#">Privacy</a><a href="#">FAQ</a><a href="#">Discord</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TF2Bazaar – Team Fortress 2 Trading</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">🎮</span>
+      <span class="logo-text">TF2<span class="accent">Bazaar</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#market" class="active">Market</a></li>
+      <li><a href="#unusual">Unusuals</a></li>
+      <li><a href="#craftable">Craftable</a></li>
+      <li><a href="#trades">Trades</a></li>
+      <li><a href="#inventory">Inventory</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="balance-display">
+        <span>🔑</span>
+        <span id="keyBalance">12 keys</span>
+        <span class="separator">|</span>
+        <span>💰</span>
+        <span id="refBalance">45.33 ref</span>
+      </div>
+      <button class="btn btn-primary" onclick="openListModal()">+ List Item</button>
+      <div class="user-avatar">
+        <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=TF2Player" alt="User" />
+        <span>MannCoTrader</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CLASS BANNER -->
+  <div class="class-banner">
+    <div class="class-banner-content">
+      <div class="class-info">
+        <div class="class-badge">⚡ NEW UNUSUALS IN STOCK</div>
+        <h1>TF2 Bazaar</h1>
+        <p>The best place to trade Team Fortress 2 items. Keys, unusuals, hats, and more!</p>
+        <div class="class-stats">
+          <div class="cs"><span class="cv" id="totalItems">0</span><span class="cl">Items Listed</span></div>
+          <div class="cs"><span class="cv">890K</span><span class="cl">Keys Traded</span></div>
+          <div class="cs"><span class="cv">99.9%</span><span class="cl">Trust Score</span></div>
+        </div>
+      </div>
+      <div class="class-emojis" id="classEmojis"></div>
+    </div>
+  </div>
+
+  <!-- ITEM TYPE TABS -->
+  <div class="type-tabs">
+    <button class="type-tab active" onclick="switchType('all', this)">All Items</button>
+    <button class="type-tab" onclick="switchType('Hat', this)">🎩 Hats</button>
+    <button class="type-tab" onclick="switchType('Weapon', this)">⚔️ Weapons</button>
+    <button class="type-tab" onclick="switchType('Cosmetic', this)">💎 Cosmetics</button>
+    <button class="type-tab" onclick="switchType('Misc', this)">📦 Misc</button>
+    <button class="type-tab" onclick="switchType('Key', this)">🔑 Keys & Currency</button>
+  </div>
+
+  <!-- QUALITY FILTER ROW -->
+  <div class="quality-row">
+    <span class="quality-label">Quality:</span>
+    <button class="qual-btn active" onclick="switchQuality('', this)" style="color:var(--text)">Any</button>
+    <button class="qual-btn" onclick="switchQuality('Unusual', this)" style="color:#8650AC">Unusual</button>
+    <button class="qual-btn" onclick="switchQuality('Genuine', this)" style="color:#4D7455">Genuine</button>
+    <button class="qual-btn" onclick="switchQuality('Strange', this)" style="color:#CF6A32">Strange</button>
+    <button class="qual-btn" onclick="switchQuality('Vintage', this)" style="color:#476291">Vintage</button>
+    <button class="qual-btn" onclick="switchQuality('Unique', this)" style="color:#FFD700">Unique</button>
+    <button class="qual-btn" onclick="switchQuality('Craft', this)" style="color:var(--muted)">Craft #</button>
+  </div>
+
+  <!-- SEARCH & SORT -->
+  <div class="search-bar-row">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Search TF2 items..." oninput="applyFilters()" />
+    </div>
+    <select id="sortSelect" onchange="applyFilters()">
+      <option value="price-desc">Price: High → Low</option>
+      <option value="price-asc">Price: Low → High</option>
+      <option value="newest">Newest</option>
+    </select>
+    <div class="price-filter">
+      <input type="number" id="minKeys" placeholder="Min Keys" step="0.05" oninput="applyFilters()" />
+      <span>–</span>
+      <input type="number" id="maxKeys" placeholder="Max Keys" step="0.05" oninput="applyFilters()" />
+    </div>
+  </div>
+
+  <!-- MARKET GRID -->
+  <main class="market-container" id="market">
+    <div class="items-count">
+      <strong id="resultCount">0</strong> items found
+    </div>
+    <div class="items-grid" id="itemsGrid"></div>
+  </main>
+
+  <!-- ITEM MODAL -->
+  <div class="modal-overlay" id="itemModal" onclick="closeItemModal(event)">
+    <div class="modal item-modal">
+      <button class="modal-close" onclick="closeItemModal()">✕</button>
+      <div id="itemDetail"></div>
+    </div>
+  </div>
+
+  <!-- LIST ITEM MODAL -->
+  <div class="modal-overlay" id="listModal" onclick="closeListModal(event)">
+    <div class="modal list-modal">
+      <button class="modal-close" onclick="closeListModal()">✕</button>
+      <h2>🏪 List Item for Trade</h2>
+      <p class="sub">Pick an item from your inventory</p>
+      <div class="list-inv-grid" id="listInvGrid"></div>
+      <div class="list-form" id="listForm" style="display:none">
+        <div class="list-preview" id="listPreview"></div>
+        <div class="price-inputs">
+          <div class="pi-group">
+            <label>Keys</label>
+            <input type="number" id="listKeys" min="0" step="1" value="0" />
+          </div>
+          <div class="pi-sep">+</div>
+          <div class="pi-group">
+            <label>Ref</label>
+            <input type="number" id="listRef" min="0" step="0.11" value="0" />
+          </div>
+        </div>
+        <div class="trade-note-field">
+          <label>Trade Comment (optional)</label>
+          <input type="text" id="tradeNote" placeholder="e.g. Only trading for unusual hats" />
+        </div>
+        <div class="list-actions">
+          <button class="btn btn-primary btn-full" onclick="submitListing()">List Item</button>
+          <button class="btn btn-ghost btn-full" onclick="closeListModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRADES SECTION -->
+  <section class="section" id="trades">
+    <h2>🔄 My Listings</h2>
+    <div id="myListingsContainer"><div class="empty"><span>📭</span><p>No active listings. Click "List Item" to start trading!</p></div></div>
+  </section>
+
+  <!-- UNUSUAL SHOWCASE -->
+  <section class="section" id="unusual">
+    <h2>⚡ Featured Unusuals</h2>
+    <div class="unusual-grid" id="unusualGrid"></div>
+  </section>
+
+  <!-- INVENTORY -->
+  <section class="section" id="inventory">
+    <div class="inv-header">
+      <h2>🎒 My Backpack</h2>
+      <div class="inv-actions">
+        <span class="inv-worth">Est. Value: <strong id="backpackValue">0 keys</strong></span>
+        <button class="btn btn-outline" onclick="openSteamTrade()">Steam Trade Offer</button>
+      </div>
+    </div>
+    <div class="backpack-grid" id="backpackGrid"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">🎮 TF2<span class="accent">Bazaar</span></div>
+        <p>Not affiliated with Valve Corporation or Team Fortress 2.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Rules</a><a href="#">API</a><a href="#">Discord</a><a href="#">Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

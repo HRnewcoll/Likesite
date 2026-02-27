@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS2Market – Trade CS2 Skins</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">⚔️</span>
+      <span class="logo-text">CS2<span class="accent">Market</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#market" class="active">Market</a></li>
+      <li><a href="#trades">My Trades</a></li>
+      <li><a href="#inventory">Inventory</a></li>
+      <li><a href="#history">History</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="balance-display">
+        <span>💵</span>
+        <span id="balance">$1,250.00</span>
+      </div>
+      <button class="btn btn-sell-items" onclick="openSellModal()">+ List Item</button>
+      <div class="user-avatar">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Trader" alt="User" />
+        <span>Trader_Pro</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <h1>CS2 Skin Market</h1>
+        <p>Buy and sell CS2 skins safely. Instant trades, best prices guaranteed.</p>
+      </div>
+      <div class="market-stats">
+        <div class="mstat">
+          <span class="mstat-val" id="totalListings">0</span>
+          <span class="mstat-lab">Listings</span>
+        </div>
+        <div class="mstat">
+          <span class="mstat-val">$24.7M</span>
+          <span class="mstat-lab">Volume (24h)</span>
+        </div>
+        <div class="mstat">
+          <span class="mstat-val">48K</span>
+          <span class="mstat-lab">Online Now</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTERS BAR -->
+  <div class="filters-bar">
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search skins, weapons, knives..." oninput="applyFilters()" />
+    </div>
+    <select id="categoryFilter" onchange="applyFilters()">
+      <option value="">All Categories</option>
+      <option value="Rifle">Rifles</option>
+      <option value="Pistol">Pistols</option>
+      <option value="Knife">Knives</option>
+      <option value="SMG">SMGs</option>
+      <option value="Sniper">Snipers</option>
+      <option value="Gloves">Gloves</option>
+    </select>
+    <select id="rarityFilter" onchange="applyFilters()">
+      <option value="">All Rarities</option>
+      <option value="gold">Legendary</option>
+      <option value="purple">Rare</option>
+      <option value="blue">Uncommon</option>
+      <option value="gray">Common</option>
+    </select>
+    <select id="sortFilter" onchange="applyFilters()">
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="popular">Most Popular</option>
+      <option value="newest">Newest</option>
+    </select>
+    <div class="price-range">
+      <input type="number" id="minPrice" placeholder="Min $" oninput="applyFilters()" />
+      <span>–</span>
+      <input type="number" id="maxPrice" placeholder="Max $" oninput="applyFilters()" />
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout" id="market">
+    <!-- MARKET LISTINGS -->
+    <div class="market-section">
+      <div class="section-toolbar">
+        <div class="result-count">
+          <span id="resultCount">0</span> items found
+        </div>
+        <div class="view-toggle">
+          <button class="view-btn active" onclick="setView('grid', this)" title="Grid">⊞</button>
+          <button class="view-btn" onclick="setView('list', this)" title="List">☰</button>
+        </div>
+      </div>
+      <div class="listings-grid" id="listingsGrid"></div>
+      <div class="load-more-wrapper">
+        <button class="btn btn-load-more" onclick="loadMore()">Load More</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ITEM DETAIL MODAL -->
+  <div class="modal-overlay" id="itemModal" onclick="closeItemModal(event)">
+    <div class="modal item-modal">
+      <button class="modal-close" onclick="closeItemModal()">✕</button>
+      <div class="item-detail" id="itemDetail"></div>
+    </div>
+  </div>
+
+  <!-- SELL MODAL -->
+  <div class="modal-overlay" id="sellModal" onclick="closeSellModal(event)">
+    <div class="modal sell-modal">
+      <button class="modal-close" onclick="closeSellModal()">✕</button>
+      <h2>📦 List Item for Sale</h2>
+      <div class="sell-inventory" id="sellInventory"></div>
+      <div class="sell-form" id="sellForm" style="display:none">
+        <div class="selected-item-preview" id="selectedItemPreview"></div>
+        <label>Listing Price ($)</label>
+        <input type="number" id="listPrice" placeholder="0.00" step="0.01" />
+        <div class="price-suggestion" id="priceSuggestion"></div>
+        <label>Trade Type</label>
+        <div class="trade-type-btns">
+          <button class="trade-type-btn active" onclick="setTradeType('sell', this)">💵 Sell Instantly</button>
+          <button class="trade-type-btn" onclick="setTradeType('trade', this)">🔄 Trade Offer</button>
+        </div>
+        <button class="btn btn-list-item" onclick="listItem()">List Item</button>
+        <button class="btn btn-cancel" onclick="cancelSell()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRADE OFFER MODAL -->
+  <div class="modal-overlay" id="tradeModal" onclick="closeTradeModal(event)">
+    <div class="modal trade-modal">
+      <button class="modal-close" onclick="closeTradeModal()">✕</button>
+      <h2>🔄 Send Trade Offer</h2>
+      <div class="trade-layout">
+        <div class="trade-side">
+          <h3>You Give</h3>
+          <div class="trade-drop-zone" id="yourItems">
+            <p class="drop-hint">Select items from your inventory</p>
+          </div>
+          <div class="trade-inv-mini" id="tradeYourInv"></div>
+        </div>
+        <div class="trade-arrow">⇄</div>
+        <div class="trade-side">
+          <h3>You Receive</h3>
+          <div class="trade-drop-zone" id="theirItems">
+            <div class="pending-item" id="tradeTargetItem"></div>
+          </div>
+          <div class="trade-value-diff" id="tradeValueDiff"></div>
+        </div>
+      </div>
+      <div class="trade-actions">
+        <button class="btn btn-send-trade" onclick="sendTradeOffer()">Send Offer</button>
+        <button class="btn btn-cancel" onclick="closeTradeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY TRADES SECTION -->
+  <section class="section" id="trades">
+    <h2>My Active Trades</h2>
+    <div class="trades-list" id="tradesList">
+      <div class="empty-state">
+        <span>🔄</span>
+        <p>No active trades. List an item or send a trade offer!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTORY SECTION -->
+  <section class="section" id="history">
+    <h2>Trade History</h2>
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Type</th>
+          <th>Price</th>
+          <th>Counterparty</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="historyBody"></tbody>
+    </table>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span>⚔️</span> CS2<span class="accent">Market</span>
+      </div>
+      <div class="footer-links">
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">Support</a>
+        <a href="#">API</a>
+      </div>
+      <p class="footer-note">CS2Market is not affiliated with Valve Corporation.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
