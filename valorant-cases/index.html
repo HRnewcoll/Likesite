@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ValorantNight – Valorant Skin Night Market</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">🔺</span>
+      <span class="logo-text">Valorant<span class="accent">Night</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#nightmarket" class="active">Night Market</a></li>
+      <li><a href="#store">Store</a></li>
+      <li><a href="#bundles">Bundles</a></li>
+      <li><a href="#inventory">Collection</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="balance-display">
+        <span>💠</span>
+        <span id="balance">4,750 VP</span>
+      </div>
+      <button class="btn btn-deposit" onclick="showDeposit()">+ Add VP</button>
+      <div class="user-avatar">
+        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=ValorantAgent" alt="User" />
+        <span>Agent#0001</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">🌙 NIGHT MARKET OPEN</div>
+    <h1>Your Personal<br /><span class="gradient-text">Night Market</span></h1>
+    <p>Six exclusive discounted skins selected just for you. Limited time — claim yours before it's gone.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-value">6</span><span class="stat-label">Your Offers</span></div>
+      <div class="stat"><span class="stat-value">Up to 60%</span><span class="stat-label">Discount</span></div>
+      <div class="stat"><span class="stat-value">87K+</span><span class="stat-label">Active Agents</span></div>
+    </div>
+  </section>
+
+  <!-- NIGHT MARKET -->
+  <section class="section" id="nightmarket">
+    <div class="section-header">
+      <h2>🌙 Night Market — Your Offers</h2>
+      <span style="color:var(--text-secondary);font-size:0.88rem;" id="nmTimer">Resets in: 5d 14h 22m</span>
+    </div>
+    <div class="nm-wrapper">
+      <div class="nm-title">🃏 Your Exclusive Night Market Has Arrived</div>
+      <div class="nm-subtitle">Click each card to reveal your discounted skin. One-time offers, just for you.</div>
+      <div class="nm-cards" id="nmCards"></div>
+      <div class="nm-actions">
+        <button class="btn-reveal-all" onclick="revealAll()">✨ Reveal All</button>
+        <button class="btn-reroll" onclick="rerollMarket()">🎲 Re-roll (500 VP)</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WIN BANNER (hidden until a card is bought) -->
+  <div class="section" id="winSection" style="display:none;">
+    <div class="win-banner">
+      <h2>🎉 Skin Purchased!</h2>
+      <div class="win-item" id="winItemName"></div>
+      <p style="color:var(--text-secondary);font-size:0.88rem;">Added to your collection</p>
+      <div class="win-actions">
+        <button class="btn-keep" onclick="closeWin()">🎒 View Collection</button>
+        <button class="btn-sell-win" onclick="closeWin()">← Back to Market</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKIN STORE -->
+  <section class="section" id="store">
+    <div class="section-header">
+      <h2>🏪 Daily Store</h2>
+      <span style="color:var(--text-secondary);font-size:0.88rem;" id="storeTimer">Resets in: 10h 33m</span>
+    </div>
+    <div class="filters-bar">
+      <button class="filter-btn active" onclick="filterSkins('all',this)">All</button>
+      <button class="filter-btn" onclick="filterSkins('rifle',this)">🔫 Rifles</button>
+      <button class="filter-btn" onclick="filterSkins('pistol',this)">🔹 Pistols</button>
+      <button class="filter-btn" onclick="filterSkins('melee',this)">🗡️ Melees</button>
+      <button class="filter-btn" onclick="filterSkins('smg',this)">⚡ SMGs</button>
+      <button class="filter-btn" onclick="filterSkins('sniper',this)">🎯 Snipers</button>
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="skinSearch" placeholder="Search skins..." oninput="searchSkins()" />
+      </div>
+      <select class="sort-select" onchange="sortSkins(this.value)">
+        <option value="price-desc">Price: High → Low</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="name">Name A-Z</option>
+      </select>
+    </div>
+    <div class="skins-grid" id="skinsGrid"></div>
+  </section>
+
+  <!-- COLLECTION / INVENTORY -->
+  <section class="section" id="inventory">
+    <div class="section-header">
+      <h2>🗂️ My Collection</h2>
+      <span id="collectionCount" style="color:var(--text-secondary);font-size:0.88rem;">0 skins</span>
+    </div>
+    <div class="inventory-grid" id="inventoryGrid">
+      <div class="empty-state"><span>🎒</span>No skins yet. Buy from the Night Market or Store!</div>
+    </div>
+  </section>
+
+  <!-- DEPOSIT MODAL -->
+  <div class="modal-overlay" id="depositModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeDeposit()">×</button>
+      <h3>💠 Add Valorant Points</h3>
+      <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:1.25rem;">Purchase VP to buy skins from the Night Market and Store.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.25rem;">
+        <button class="filter-btn" onclick="selectVP(475)">475 VP — $4.99</button>
+        <button class="filter-btn" onclick="selectVP(1000)">1,000 VP — $9.99</button>
+        <button class="filter-btn" onclick="selectVP(2050)">2,050 VP — $19.99</button>
+        <button class="filter-btn" onclick="selectVP(5350)">5,350 VP — $49.99</button>
+      </div>
+      <input type="number" id="vpAmount" placeholder="Or enter VP amount..." min="1" />
+      <button class="btn-confirm" onclick="confirmDeposit()">Add Valorant Points</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <footer style="text-align:center;padding:2rem;color:var(--text-secondary);font-size:0.82rem;border-top:1px solid var(--border);margin-top:2rem;">
+    <a href="../index.html" style="color:var(--accent);text-decoration:none;font-weight:700;margin-bottom:0.5rem;display:inline-block;">← Back to GameSites Hub</a><br/>
+    ⚠️ ValorantNight is a demo template. Not affiliated with Riot Games or VALORANT.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

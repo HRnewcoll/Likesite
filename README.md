@@ -1,6 +1,6 @@
 # Likesite – Gaming Sites & Trading Platforms
 
-A collection of five fully-designed gaming site templates. Each site is self-contained with its own HTML, CSS, and JavaScript — no build tools or dependencies required.
+A collection of **ten** fully-designed gaming site templates. Each site is self-contained with its own HTML, CSS, and JavaScript — no build tools or dependencies required.
 
 ---
 
@@ -13,8 +13,13 @@ A collection of five fully-designed gaming site templates. Each site is self-con
 | `rust-trading/` | **RustTrade** | Rust Trading Platform | Rustyskins / Skinsmonkey |
 | `tf2-trading/` | **TF2Bazaar** | TF2 Trading Platform | Backpack.tf / TF2.gg |
 | `dota2-trading/` | **Dota2Items** | Dota 2 Trading Platform | OpenDota Market |
+| `valorant-cases/` | **ValorantNight** | Valorant Night Market | Valorant In-Game Night Market |
+| `rl-trading/` | **RLExchange** | Rocket League Trading | RL.Exchange / RLGarage |
+| `cs2-crash/` | **CS2Crash** | CS2 Crash Game | CSGORoll / CSGOEmpire |
+| `apex-packs/` | **ApexPacks** | Apex Legends Pack Opening | Apex Legends Pack Store |
+| `fifa-packs/` | **FUTPacks** | FIFA FUT Pack Opening | FIFA Ultimate Team |
 
-Open `index.html` in the root for the main landing page linking to all five sites.
+Open `index.html` in the root for the main landing page linking to all ten sites.
 
 ---
 
@@ -61,6 +66,49 @@ A Dota 2 item trading platform:
 - Featured Arcana and Immortal showcases
 - Item detail modal with rarity-themed styling
 
+### ValorantNight (`valorant-cases/`)
+A Valorant Night Market skin opener:
+- 6 personalized discounted skin card reveals with flip animation
+- Live countdown timers for Night Market and Daily Store resets
+- Full skin store with 28 skins across all tiers (Select, Deluxe, Premium, Exclusive, Ultra)
+- Filter by weapon type, search, and sort
+- VP (Valorant Points) currency system with re-roll
+- Collection inventory
+
+### RLExchange (`rl-trading/`)
+A Rocket League item trading platform:
+- 28 items: Black Market decals, Exotic wheels, Import bodies, Rare/Uncommon boosts & toppers
+- Paint color indicators, Certification badges, rarity borders
+- P2P trade offer builder (offer ↔ request panels)
+- Sales ticker, trade history table
+- Credits currency system
+
+### CS2Crash (`cs2-crash/`)
+A fully-playable CS2 Crash game (like CSGORoll):
+- Real-time exponential multiplier graph drawn on HTML Canvas
+- Place bets, cash out manually, or set auto cash-out multiplier
+- Provably-fair hash display per round
+- Bot players with auto-cashout that update live
+- Previous rounds history badges
+- Bet history table, personal stats panel
+
+### ApexPacks (`apex-packs/`)
+An Apex Legends pack opening site:
+- 4 pack types: Standard, Apex Bundle, Legendary, Heirloom (guaranteed heirloom shards)
+- 32 items across Wraith, Bloodhound, Octane, Lifeline, Pathfinder, Bangalore, Mirage, Caustic
+- Staggered card-flip reveal animations
+- Legend filter for collection
+- Live drops ticker
+
+### FUTPacks (`fifa-packs/`)
+A FIFA Ultimate Team pack opening site:
+- 7 pack types: Bronze, Silver, Gold, Premium Gold, Mega, TOTS, TOTY
+- 20 real-player-inspired Gold cards + TOTS/TOTY specials
+- Player cards styled with authentic Gold/Silver/Bronze/TOTS/TOTY gradients
+- Transfer Market with buy-now listings
+- My Club squad view
+- Sales ticker
+
 ---
 
 ## 🚀 Usage
@@ -68,12 +116,17 @@ A Dota 2 item trading platform:
 Simply open any `index.html` file in a web browser — no server required.
 
 ```
-open index.html               # Landing page
-open cs2-cases/index.html     # CS2 Case Opening
-open cs2-trading/index.html   # CS2 Trading
-open rust-trading/index.html  # Rust Trading
-open tf2-trading/index.html   # TF2 Trading
-open dota2-trading/index.html # Dota 2 Trading
+open index.html                    # Landing page (all 10 sites)
+open cs2-cases/index.html          # CS2 Case Opening
+open cs2-trading/index.html        # CS2 Trading
+open rust-trading/index.html       # Rust Trading
+open tf2-trading/index.html        # TF2 Trading
+open dota2-trading/index.html      # Dota 2 Trading
+open valorant-cases/index.html     # Valorant Night Market
+open rl-trading/index.html         # Rocket League Trading
+open cs2-crash/index.html          # CS2 Crash Game
+open apex-packs/index.html         # Apex Legends Packs
+open fifa-packs/index.html         # FIFA FUT Packs
 ```
 
 ---
@@ -81,4 +134,4 @@ open dota2-trading/index.html # Dota 2 Trading
 ## ⚠️ Disclaimer
 
 These are template/demo sites for educational and entertainment purposes only.
-Not affiliated with Valve Corporation, CS2, Rust, Team Fortress 2, or Dota 2.
+Not affiliated with Valve Corporation, Riot Games, Psyonix/Epic Games, Respawn Entertainment/EA, or any other game developer.

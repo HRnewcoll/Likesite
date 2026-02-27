@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ApexPacks – Apex Legends Pack Opening</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span style="font-size:1.6rem;">🦁</span>
+      <span style="margin-left:8px;">Apex<span class="accent">Packs</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#packs" class="active">Packs</a></li>
+      <li><a href="#collection">Collection</a></li>
+      <li><a href="#legends">Legends</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="balance-display">
+        <span>💎</span>
+        <span id="balance">3,200 Coins</span>
+      </div>
+      <button class="btn btn-deposit" onclick="showDeposit()">+ Buy Coins</button>
+      <div class="user-avatar">
+        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=ApexPlayer" alt="User" />
+        <span>ApexPredator</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🔥 Season 22 Packs</div>
+      <h1>Open Apex Packs<br /><span class="gradient-text">Win Legendary Skins</span></h1>
+      <p>Unlock Legendary skins, Epic frames, Rare banners, and the ultra-rare Heirloom Shards for your favorite Legends.</p>
+      <div class="hero-stats">
+        <div class="hstat"><span class="hv">1 in 500</span><span class="hl">Heirloom Chance</span></div>
+        <div class="hstat"><span class="hv">100%</span><span class="hl">No Dupe Guarantee</span></div>
+        <div class="hstat"><span class="hv">500</span><span class="hl">Packs = Heirloom</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE DROPS -->
+  <div class="drops-feed">
+    <div class="drop-label">🔴 LIVE</div>
+    <div class="drops-scroll" id="dropsScroll"></div>
+  </div>
+
+  <!-- PACK STORE -->
+  <section class="section" id="packs">
+    <div class="section-header">
+      <h2>🎁 Choose a Pack</h2>
+      <span style="color:var(--text-secondary);font-size:0.88rem;">Each pack contains 3 items</span>
+    </div>
+    <div class="packs-grid" id="packsGrid"></div>
+  </section>
+
+  <!-- OPENING OVERLAY -->
+  <div class="opening-overlay" id="openingOverlay">
+    <div class="opening-modal">
+      <button class="modal-close-btn" onclick="closeOpening()">×</button>
+      <h3 id="openingTitle">Opening Apex Pack…</h3>
+      <div class="pack-reveal-cards" id="revealCards"></div>
+      <div class="modal-actions">
+        <button class="btn-keep-all" onclick="closeOpening()">🎒 Add to Collection</button>
+        <button class="btn-open-again" id="openAgainBtn" onclick="openAgain()">🎁 Open Another</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLLECTION -->
+  <section class="section" id="collection">
+    <div class="section-header">
+      <h2>🗂️ My Collection</h2>
+      <span id="collCount" style="color:var(--text-secondary);font-size:0.88rem;">0 items</span>
+    </div>
+    <div class="legends-filter" id="legendsFilter"></div>
+    <div class="collection-grid" id="collectionGrid">
+      <div class="empty-state"><span>🎒</span>Open some packs to start your collection!</div>
+    </div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+
+  <footer style="text-align:center;padding:2rem;color:var(--text-secondary);font-size:0.82rem;border-top:1px solid var(--border);margin-top:1rem;">
+    <a href="../index.html" style="color:var(--accent);text-decoration:none;font-weight:700;margin-bottom:0.5rem;display:inline-block;">← Back to GameSites Hub</a><br/>
+    ⚠️ ApexPacks is a demo template. Not affiliated with Respawn Entertainment or EA.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
